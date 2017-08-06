@@ -1,32 +1,38 @@
-import socket
-import sys
+class Network(object):
 
-portNumber = 0
-isInitialized = false
-socket = None
-connection = None
+    import socket
+    import sys
 
-def __init__(self):
-    global portNumber = 3341
-    isInitialized = false
+    portNumber = 0
+    isInitialized = False
+    socket = None
+    connection = None
 
-
-def startServer(): #startServer
-    global socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = socket.gethostname()
-    socket.bind((host, port))
-    socket.listen(1)
-    global connection, addr = socket.accept()
+    def __init__(self):
+        global portNumber
+        portNumber = 3341
+        isInitialized = False
 
 
-def waitForPing(): #wait for something to be sent
-    if(socket != None):
-        receive = socket.recv(1024)
+    def startServer(self): #startServer
+        global socket
+        socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host = socket.gethostname()
+        socket.bind((host, port))
+        socket.listen(1)
+        global connection
+        connection, addr = socket.accept()
+        isInitialized = True
+
+
+    def waitForPing(self): #wait for something to be sent
+        if(socket != None):
+            receive = socket.recv(1024)
         if receive == None or receive == ' ' :
             print ("Hasn't received ping")
 
 
 
-def sendMessage(message): # send message to NTable client
-    if(connection != None):
-        onnection.send(message + "\n")
+    def sendMessage(self, message): # send message to NTable client
+        if(connection != None):
+            connection.send(message + "\n")

@@ -1,13 +1,52 @@
-
-
 import numpy as np
 import cv2
 import math
+from socket import *
+import sys
 
-Video_capture = cv2.VideoCapture(0)
+class Network(object):
+
+    import socket
+    import sys
+
+    portNumber = 0
+    isInitialized = False
+    socket = None
+    connection = None
+
+    def __init__(self):
+        global portNumber
+        portNumber = 3341
+        isInitialized = False
+
+
+    def startServer(self): #startServer
+        global socket
+        socket = socket(AF_INET, SOCK_STREAM)
+        host = gethostname()
+        socket.bind((host, portNumber))
+        socket.listen(1)
+        global connection
+        connection, addr = socket.accept()
+        isInitialized = True
+
+
+    def waitForPing(self): #wait for something to be sent
+        if(socket != None):
+            receive = socket.recv(1024)
+        if receive == None or receive == ' ' :
+            print ("Hasn't received ping")
+
+
+
+    def sendMessage(self, message): # send message to NTable client
+        if(connection != None):
+            connection.send(message + "\n")
+
+Video_capture = cv2.VideoCapture(2)
 horizCenter = 320 #if we used last year’s camera
 vertiCenter = 240
-targetWidth = 3
+targetWidth = 2
 targetHeight = 500
 focalLength = 700
 imageTarWidth = None
@@ -37,9 +76,13 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
 
             azimuth = np.arctan(offsetX/ focalLength)*180/math.pi
             altitude = np.arctan(offsetY/ focalLength)*180/math.pi
-            print (distance)
-            print (azimuth)
-            print (altitude)
+            #print (distance)
+            #print (azimuth)
+            #print (altitude)
+
+            network.sendMessage(str(distance))
+            network.sendMessage(str(azimuth))
+            network.sendMessage(str(altitude))
 
             imageTarWidth = None
             imageTarHeight = None
@@ -47,8 +90,12 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             rectCenterY = None
 
 #def __init__(self):
+network = Network()
+network.startServer()
 
 while(True):
+
+        network.waitForPing
 
         cv2.namedWindow('Threshed', cv2.WINDOW_AUTOSIZE)
         cv2.namedWindow("Live Feed", cv2.WINDOW_AUTOSIZE)
