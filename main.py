@@ -44,7 +44,7 @@ class Network(object):
             connection.send(message + "\n")
 
 Video_capture = cv2.VideoCapture(2)
-horizCenter = 320 #if we used last year’s camera
+horizCenter = 320 
 vertiCenter = 240
 targetWidth = 2
 targetHeight = 500
@@ -76,9 +76,9 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
 
             azimuth = np.arctan(offsetX/ focalLength)*180/math.pi
             altitude = np.arctan(offsetY/ focalLength)*180/math.pi
-            #print (distance)
-            #print (azimuth)
-            #print (altitude)
+            #print ('Distance' + str(distance))
+            #print ('Azimuth' + str(azimuth))
+            #print ('Altitude' + str(altitude))
 
             network.sendMessage(str(distance))
             network.sendMessage(str(azimuth))
@@ -92,10 +92,9 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
 #def __init__(self):
 network = Network()
 network.startServer()
+network.waitForPing()
 
 while(True):
-
-        network.waitForPing
 
         cv2.namedWindow('Threshed', cv2.WINDOW_AUTOSIZE)
         cv2.namedWindow("Live Feed", cv2.WINDOW_AUTOSIZE)
