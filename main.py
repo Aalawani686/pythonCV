@@ -182,6 +182,14 @@ while(True):
                 imageTarWidth = (maxX-minX)
                 #print (imageTarWidth)
                 imageTarHeight = (maxY-minY)
+                if(imageTarHeight<2*imageTarWidth):
+                    imageTarWidth = None
+                    imageTarHeight = None
+                    maxX = 0.0
+                    minX = 20000.0
+                    maxY = 0.0
+                    minY = 20000.0
+                    continue
                 rectCenterX = (maxX + minX)/2
                 rectCenterY = (maxY + minY)/2
 
