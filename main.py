@@ -43,8 +43,8 @@ class Network(object):
         if(connection != None):
             connection.send(message + "\n")
 
-Video_capture = cv2.VideoCapture(2)
-horizCenter = 320 
+Video_capture = cv2.VideoCapture(1)
+horizCenter = 320
 vertiCenter = 240
 targetWidth = 2
 targetHeight = 500
@@ -80,9 +80,9 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             #print ('Azimuth' + str(azimuth))
             #print ('Altitude' + str(altitude))
 
-            network.sendMessage(str(distance))
-            network.sendMessage(str(azimuth))
-            network.sendMessage(str(altitude))
+            #network.sendMessage(str(distance))
+            #network.sendMessage(str(azimuth))
+            #network.sendMessage(str(altitude))
 
             imageTarWidth = None
             imageTarHeight = None
@@ -90,9 +90,9 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             rectCenterY = None
 
 #def __init__(self):
-network = Network()
-network.startServer()
-network.waitForPing()
+#network = Network()
+#network.startServer()
+#network.waitForPing()
 
 while(True):
 
