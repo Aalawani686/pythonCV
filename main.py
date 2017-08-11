@@ -1,47 +1,6 @@
 import numpy as np
 import cv2
 import math
-from socket import *
-import sys
-
-class Network(object):
-
-    import socket
-    import sys
-
-    portNumber = 0
-    isInitialized = False
-    socket = None
-    connection = None
-
-    def __init__(self):
-        global portNumber
-        portNumber = 3341
-        isInitialized = False
-
-
-    def startServer(self): #startServer
-        global socket
-        socket = socket(AF_INET, SOCK_STREAM)
-        host = gethostname()
-        socket.bind((host, portNumber))
-        socket.listen(1)
-        global connection
-        connection, addr = socket.accept()
-        isInitialized = True
-
-
-    def waitForPing(self): #wait for something to be sent
-        if(socket != None):
-            receive = socket.recv(1024)
-        if receive == None or receive == ' ' :
-            print ("Hasn't received ping")
-
-
-
-    def sendMessage(self, message): # send message to NTable client
-        if(connection != None):
-            connection.send(message + "\n")
 
 Video_capture = cv2.VideoCapture(1)
 horizCenter = 320
@@ -80,19 +39,13 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             #print ('Azimuth' + str(azimuth))
             #print ('Altitude' + str(altitude))
 
-            #network.sendMessage(str(distance))
-            #network.sendMessage(str(azimuth))
-            #network.sendMessage(str(altitude))
-
             imageTarWidth = None
             imageTarHeight = None
             rectCenterX = None
             rectCenterY = None
 
 #def __init__(self):
-#network = Network()
-#network.startServer()
-#network.waitForPing()
+
 
 while(True):
 
