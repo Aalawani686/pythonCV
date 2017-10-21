@@ -1,9 +1,50 @@
 import numpy as np
 import cv2
 import math
+from socket import *
+import sys
 
-Video_capture = cv2.VideoCapture(1)
-horizCenter = 320
+class Network(object):
+
+    import socket
+    import sys
+
+    portNumber = 0
+    isInitialized = False
+    socket = None
+    connection = None
+
+    def __init__(self):
+        global portNumber
+        portNumber = 3341
+        isInitialized = False
+
+
+    def startServer(self): #startServer
+        global socket
+        socket = socket(AF_INET, SOCK_STREAM)
+        host = gethostname()
+        socket.bind((host, portNumber))
+        socket.listen(1)
+        global connection
+        connection, addr = socket.accept()
+        isInitialized = True
+
+
+    def waitForPing(self): #wait for something to be sent
+        if(socket != None):
+            receive = socket.recv(1024)
+        if receive == None or receive == ' ' :
+            print ("Hasn't received ping")
+
+
+
+    def sendMessage(self, message): # send message to NTable client
+        if(connection != None):
+            connection.send(message + "\n")
+
+Video_capture = cv2.VideoCapture(0)
+horizCenter = 320 #if we used last year’s camera
 vertiCenter = 240
 targetWidth = 2
 targetHeight = 500
@@ -35,9 +76,13 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
 
             azimuth = np.arctan(offsetX/ focalLength)*180/math.pi
             altitude = np.arctan(offsetY/ focalLength)*180/math.pi
-            #print ('Distance' + str(distance))
-            #print ('Azimuth' + str(azimuth))
-            #print ('Altitude' + str(altitude))
+            #print (distance)
+            #print (azimuth)
+            #print (altitude)
+
+            network.sendMessage(str(distance))
+            network.sendMessage(str(azimuth))
+            network.sendMessage(str(altitude))
 
             imageTarWidth = None
             imageTarHeight = None
@@ -45,9 +90,12 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             rectCenterY = None
 
 #def __init__(self):
-
+network = Network()
+network.startServer()
 
 while(True):
+
+        network.waitForPing()
 
         cv2.namedWindow('Threshed', cv2.WINDOW_AUTOSIZE)
         cv2.namedWindow("Live Feed", cv2.WINDOW_AUTOSIZE)
@@ -135,14 +183,6 @@ while(True):
                 imageTarWidth = (maxX-minX)
                 #print (imageTarWidth)
                 imageTarHeight = (maxY-minY)
-                if(imageTarHeight<2*imageTarWidth):
-                    imageTarWidth = None
-                    imageTarHeight = None
-                    maxX = 0.0
-                    minX = 20000.0
-                    maxY = 0.0
-                    minY = 20000.0
-                    continue
                 rectCenterX = (maxX + minX)/2
                 rectCenterY = (maxY + minY)/2
 

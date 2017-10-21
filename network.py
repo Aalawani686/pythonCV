@@ -1,67 +1,70 @@
-import socket               # Import socket module
+import socket
+import sys
 import threading
 
-conn = None
-soc = None
-connected = False
-
-class myThread (threading.Thread):
-   def __init__(self, threadID, name, counter):
-      threading.Thread.__init__(self)
-      self.threadID = threadID
-      self.name = name
-      self.counter = counter
-   def run(self):
-      print "Starting " + self.name
-      startServer()
-      print "Exiting " + self.name
-
-def sendMessage( message): # send message to NTable client
-        #receive = conn.recv(1024)
-        #print(receive)
-        conn.send(message + '\r\n')
-
-def startServer():
-    print ("here")
-    while True:
-        global conn
-        print ("in loop")           # Now wait for client connection.
-        conn, addr = soc.accept()
-        global connected
-        connected = True
-        #sendMessage("Hi")
-        #conn.send("Hi" + '\n')
-        #receiveMessage( "Hi")    # Establish connection with client.
-        #receive = conn.recv(1024)
-        #if receive != None and receive != '' and receive != ' ':
-            #print (receive)
-
-global soc
-soc = socket.socket()         # Create a socket object
-host = "localhost" # Get local machine name
-port = 3341                # Reserve a port for your service.
-soc.bind((host, port))       # Bind to the port
-soc.listen(5)
-thread1 = myThread(1, "Thread-1", 1)
-thread1.start()
-print("send")
-i = 0
-while True:
-    print(connected)
-    if(connected):
-        sendMessage("Hi")
-    else:
-        i = i + 1
-    if i>10000000:
-        break
+class Network(object):
 
 
 
+    portNumber = 0
+    isInitialized = False
+    s = None
+    connection = None
 
-#print ("Got connection from",addr)
-#msg = conn.recv(1024)
-#print (msg)
-#if ( msg == "Hello Server" ):
-#    print("Hii everyone")
-#else:
-#    print("Go away")
+
+    class myThread (threading.Thread):
+        def __init__(self, threadID, name, counter):
+            threading.Thread.__init__(self)
+            self.threadID = threadID
+            self.name = name
+            self.counter = counter
+
+        def run(self):
+            print ("Starting " + self.name)
+            Network.startServer()
+            print ("Exiting " + self.name)
+
+
+    def __init__(self):
+        global portNumber
+        portNumber = 3341
+        global isInitialized
+        isInitialized = False
+
+    def userServer(self):
+        global s
+
+
+        thread1 = self.myThread(1, "Thread-1", 1)
+        thread1.start()
+        print("thread started")
+
+    def startServer(): #startServer
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host = "localhost"
+        s.bind((host, portNumber))
+
+        global connection
+        print ("in startServer")
+        s.listen(5)
+        while True:
+
+            connection, addr = s.accept()
+            print ("accepted")
+            global isInitialized
+            isInitialized = True
+            connection.sendMessage("hi")
+
+
+    def waitForPing(self): #wait for something to be sent
+        if(s != None):
+            receive = s.recv(1024)
+        if receive == None or receive == ' ' :
+            print ("Hasn't received ping")
+
+
+
+    def sendMessage(self, message): # send message to NTable client
+        if(isInitialized !=  False):
+            connection.send(message + "\n")
