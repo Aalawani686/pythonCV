@@ -30,6 +30,7 @@ def angle(p1, p2, p0):
     dy1 = p1[0][1]-p0[0][1]
     dx2 = p2[0][0]-p0[0][0]
     dy2 = p2[0][1]-p0[0][1]
+    #network1.setString(str(dx2).encode('utf-8'))
     return math.atan(dy1/dx1)-math.atan(dy2/dx2);
 
 def processing(imageTarWidth, rectCenterX, rectCenterY):
@@ -47,10 +48,10 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             print ('Azimuth' + str(azimuth))
             print ('Altitude' + str(altitude))
 
-            if(network1.isInitialized):
-                network1.sendMessage(str(distance))
-                network1.sendMessage(str(azimuth))
-                network1.sendMessage(str(altitude))
+
+            network1.setDistance(str(distance).encode('utf-8'))
+            network1.setAzimuth(str(azimuth).encode('utf-8'))
+            network1.setAltitude(str(altitude).encode('utf-8'))
 
             imageTarWidth = None
             imageTarHeight = None
@@ -63,14 +64,13 @@ network1 = network.Network()
 network1.userServer()
 
 
+
 while(True):
 
     cv2.namedWindow('Threshed', cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow("Live Feed", cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow('Contours', cv2.WINDOW_AUTOSIZE)
 
-    if(network1.isInitialized):
-        network1.sendMessage("message")
     ret,frame = Video_capture.read()
     horizCenter = np.size(frame, 0)/2
     verticenter = np.size(frame, 1)/2
