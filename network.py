@@ -46,8 +46,6 @@ class Network(object):
         if receive == None or receive == ' ' :
             print ("Hasn't received ping")
 
-
-
     def sendMessage(self, message): # send message to NTable client
         if(isInitialized !=  False):
             connection.send(message + b'\n')

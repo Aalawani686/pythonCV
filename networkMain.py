@@ -101,11 +101,11 @@ while(True):
     count = -1
     for cont in contours:
         count = count + 1
-        epsilon = 0.1*cv2.arcLength(cont, True)
+        epsilon = 0.01*cv2.arcLength(cont, True)
         approx = cv2.approxPolyDP(cont, epsilon, True)
 
         if cv2.contourArea(approx) > 5000 and len(approx) == 4:
-            #print (len(approx))
+            print (len(approx))
             #print (cv2.contourArea(approx))
 
             cv2.drawContours(image, contours, count, (255,255,255), 10)
