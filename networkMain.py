@@ -4,13 +4,14 @@ import math
 from socket import *
 import sys
 import network
+import random
 
 soc = None
 conn = None
 connected = False
 
 network1 = None
-Video_capture = cv2.VideoCapture(0)
+Video_capture = cv2.VideoCapture(1)
 horizCenter = 320
 vertiCenter = 240
 targetWidth = 2
@@ -49,9 +50,9 @@ def processing(imageTarWidth, rectCenterX, rectCenterY):
             print ('Altitude' + str(altitude))
 
 
-            network1.setDistance(str(distance).encode('utf-8'))
-            network1.setAzimuth(str(azimuth).encode('utf-8'))
-            network1.setAltitude(str(altitude).encode('utf-8'))
+            network1.setDistance(str(distance))
+            network1.setAzimuth(str(azimuth))
+            network1.setAltitude(str(altitude))
 
             imageTarWidth = None
             imageTarHeight = None
@@ -67,6 +68,7 @@ network1.userServer()
 
 while(True):
 
+    #network1.setDistance(str(random.randint(1,15)))
     cv2.namedWindow('Threshed', cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow("Live Feed", cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow('Contours', cv2.WINDOW_AUTOSIZE)

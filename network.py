@@ -83,15 +83,15 @@ class Network(object):
         while True:
             if(self.sendDistance!=None):
 
-                self.sendMessage(b"Distance: " + self.sendDistance)
+                self.sendMessage(b"Distance: " + self.sendDistance.encode('utf-8'))
                 self.sendDistance = None
 
             if(self.sendAzimuth!=None):
 
-                self.sendMessage(b"Azimuth: " + self.sendAzimuth)
+                self.sendMessage(b"Azimuth: " + self.sendAzimuth.encode('utf-8'))
                 self.sendAzimuth = None
 
             if(self.sendAltitude!=None):
 
-                self.sendMessage(b"Altitude: " + self.sendAltitude)
+                self.sendMessage(b"Altitude: " + self.sendAltitude.encode('utf-8'))
                 self.sendAltitude = None
