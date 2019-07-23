@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
     public class client {
     public static void main(String[] args) {
 
-      System.out.println("waiting");
+    System.out.println("waiting");
     try{
     Socket soc=new Socket("localhost", 3341);
     BufferedReader inFromServer = new BufferedReader(new InputStreamReader (soc.getInputStream()));
